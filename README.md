@@ -14,10 +14,16 @@ Current REST API version allows to:
 
 ![image](https://user-images.githubusercontent.com/90723839/190003954-6cbf812f-a942-492f-950a-94744de7cb0b.png)
 
+4. Get list of transactions for a specified balance id and period. If no period specified full list of transactions will be retrieved.
+![image](https://user-images.githubusercontent.com/90723839/190901190-397d62b1-1e9e-4e70-a248-cbacf18561d5.png)
+
+![image](https://user-images.githubusercontent.com/90723839/190901211-162e2acc-f913-4a40-939d-a9751d36cbd6.png)
+
 
 Persistance layer tests are using TestContainers. Make sure to start Docker before running the test.
 
 Database structure:
 
-![image](https://user-images.githubusercontent.com/90723839/190004924-986ff971-7900-4bfd-a5d9-42b2d986300c.png)
+![image](https://user-images.githubusercontent.com/90723839/190901348-4fe62738-b7c7-4173-99aa-c309045867d0.png)
+
 
