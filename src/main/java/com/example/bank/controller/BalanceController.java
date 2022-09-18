@@ -1,6 +1,5 @@
 package com.example.bank.controller;
 
-import com.example.bank.entity.Balance;
 import com.example.bank.entity.BalanceDto;
 import com.example.bank.service.BalanceService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,7 +27,7 @@ public class BalanceController {
         try {
             balanceDto = balanceService.addBalance(userId, amount);
             return new ResponseEntity<>(balanceDto.toString(), HttpStatus.OK);
-        } catch (IllegalArgumentException  e) {
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -44,5 +42,4 @@ public class BalanceController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 }

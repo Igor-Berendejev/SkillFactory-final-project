@@ -2,6 +2,7 @@ package com.example.bank.service;
 
 import com.example.bank.entity.Balance;
 import com.example.bank.repository.BalanceRepository;
+import com.example.bank.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ public class BalanceServiceTest {
     @Mock
     private BalanceRepository balanceRepository;
 
+    @Mock
+    TransactionRepository transactionRepository;
+
     @Captor
     ArgumentCaptor<Long> userIdCaptor;
     @Captor
@@ -35,7 +39,7 @@ public class BalanceServiceTest {
 
     @BeforeEach
     public void setUpBalanceService() {
-        service = new BalanceService(balanceRepository);
+        service = new BalanceService(balanceRepository, transactionRepository);
     }
 
     @Test
