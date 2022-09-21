@@ -16,27 +16,27 @@ public class BalanceController {
 
     private final BalanceService balanceService;
 
-    @GetMapping("/{userId}")
-    public BigDecimal getUserBalance(@PathVariable String userId) {
-        return balanceService.getUserBalance(userId);
+    @GetMapping("/{userId}/{balanceId}")
+    public BigDecimal getUserBalance(@PathVariable String userId, @PathVariable String balanceId) {
+        return balanceService.getUserBalance(userId, balanceId);
     }
 
-    @PostMapping("/put/{userId}")
-    public ResponseEntity<String> addBalance(@PathVariable String userId, @RequestBody BigDecimal amount) {
+    @PostMapping("/put/{balanceId}")
+    public ResponseEntity<String> addBalance(@PathVariable String balanceId, @RequestBody BigDecimal amount) {
         BalanceDto balanceDto;
         try {
-            balanceDto = balanceService.addBalance(userId, amount);
+            balanceDto = balanceService.addBalance(balanceId, amount);
             return new ResponseEntity<>(balanceDto.toString(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/withdraw/{userId}")
-    public ResponseEntity<String> withdraw(@PathVariable String userId, @RequestBody BigDecimal amount) {
+    @PostMapping("/withdraw/{balanceId}")
+    public ResponseEntity<String> withdraw(@PathVariable String balanceId, @RequestBody BigDecimal amount) {
         BalanceDto balanceDto;
         try {
-            balanceDto = balanceService.withdraw(userId, amount);
+            balanceDto = balanceService.withdraw(balanceId, amount);
             return new ResponseEntity<>(balanceDto.toString(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

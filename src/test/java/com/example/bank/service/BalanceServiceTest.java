@@ -31,7 +31,7 @@ public class BalanceServiceTest {
     TransactionRepository transactionRepository;
 
     @Captor
-    ArgumentCaptor<Long> userIdCaptor;
+    ArgumentCaptor<Long> balanceIdCaptor;
     @Captor
     ArgumentCaptor<Balance> balanceArgumentCaptor;
 
@@ -46,16 +46,16 @@ public class BalanceServiceTest {
     @DisplayName("The test to make sure balance is returned by user ID")
     void returnsBalanceByUserIdTest() {
         Balance expectedBalance = new Balance(1l, 123l, BigDecimal.valueOf(666.15d));
-        when(balanceRepository.getBalanceByUserId(anyLong())).thenReturn(Optional.of(expectedBalance));
-        BigDecimal responseBalance = service.getUserBalance("123");
+        when(balanceRepository.findById(anyLong())).thenReturn(Optional.of(expectedBalance));
+        BigDecimal responseBalance = service.getUserBalance("123", "1");
         assertEquals(BigDecimal.valueOf(666.15d), responseBalance);
     }
 
     @Test
     @DisplayName("Test that IllegalArgumentException with message \"No such user\" is thrown when the user is not found")
     void throwsExceptionWhenNoUserFoundTest() {
-        when(balanceRepository.getBalanceByUserId(anyLong())).thenThrow(new IllegalArgumentException("No such user"));
-        IllegalArgumentException expected = assertThrows(IllegalArgumentException.class, () -> service.getUserBalance("123"));
+        when(balanceRepository.findById(anyLong())).thenThrow(new IllegalArgumentException("No such user"));
+        IllegalArgumentException expected = assertThrows(IllegalArgumentException.class, () -> service.getUserBalance("123", "1"));
         assertTrue(expected.getMessage().equals("No such user"));
     }
 
@@ -64,15 +64,15 @@ public class BalanceServiceTest {
     void shouldAddBalanceOnUserTest() {
         Balance oldBalance = new Balance(1l, 123l, BigDecimal.valueOf(50));
         Balance newBalance = new Balance(1l, 123l, BigDecimal.valueOf(150));
-        when(balanceRepository.getBalanceByUserId(anyLong())).thenReturn(Optional.of(oldBalance));
+        when(balanceRepository.findById(anyLong())).thenReturn(Optional.of(oldBalance));
         when(balanceRepository.save(newBalance)).thenReturn(newBalance);
 
-        service.addBalance("123", new BigDecimal(100));
+        service.addBalance("1", new BigDecimal(100));
 
-        verify(balanceRepository, Mockito.times(1)).getBalanceByUserId(userIdCaptor.capture());
+        verify(balanceRepository, Mockito.times(1)).findById(balanceIdCaptor.capture());
         verify(balanceRepository, Mockito.times(1)).save(balanceArgumentCaptor.capture());
 
-        assertEquals(123l, userIdCaptor.getValue());
+        assertEquals(1l, balanceIdCaptor.getValue());
         assertEquals(newBalance.getUserId(), balanceArgumentCaptor.getValue().getUserId());
         assertEquals(newBalance.getBalance(), balanceArgumentCaptor.getValue().getBalance());
     }

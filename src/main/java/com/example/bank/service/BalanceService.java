@@ -24,34 +24,39 @@ public class BalanceService {
 
     private final TransactionRepository transactionRepository;
 
-    public BigDecimal getUserBalance(String userId) {
-        Balance userBalance = getBalanceByUserId(userId);
-        return userBalance.getBalance();
+    public BigDecimal getUserBalance(String userId, String balanceId) {
+        Balance balance = balanceRepository.findById(Long.parseLong(balanceId))
+                .orElseThrow(() -> new IllegalArgumentException("No such balance"));
+        if (!balance.getUserId().equals(Long.parseLong(userId)))
+            throw new IllegalArgumentException("Balance " + balanceId + " does not belong to user " + userId);
+        return balance.getBalance();
     }
 
     @Transactional
-    public BalanceDto addBalance(String userId, BigDecimal amount) {
-        Balance userBalance = getBalanceByUserId(userId);
-        transactionRepository.save(new Transaction(userBalance.getId(),
+    public BalanceDto addBalance(String balanceId, BigDecimal amount) {
+        Balance balance = balanceRepository.findById(Long.parseLong(balanceId))
+                .orElseThrow(() -> new IllegalArgumentException("No such balance"));
+        transactionRepository.save(new Transaction(balance.getId(),
                 LocalDateTime.now(),
                 TransactionType.PUT,
                 amount));
-        return BalanceToDtoMapper.balanceToDto(balanceRepository.save(new Balance(userBalance.getId(),
-                userBalance.getUserId(),
-                userBalance.getBalance().add(amount))));
+        return BalanceToDtoMapper.balanceToDto(balanceRepository.save(new Balance(balance.getId(),
+                balance.getUserId(),
+                balance.getBalance().add(amount))));
     }
 
     @Transactional
-    public BalanceDto withdraw(String userId, BigDecimal amount) {
-        Balance userBalance = getBalanceByUserId(userId);
-        if (amount.compareTo(userBalance.getBalance()) > 0) throw new IllegalArgumentException("Not enough funds");
-        transactionRepository.save(new Transaction(userBalance.getId(),
+    public BalanceDto withdraw(String balanceId, BigDecimal amount) {
+        Balance balance = balanceRepository.findById(Long.parseLong(balanceId))
+                .orElseThrow(() -> new IllegalArgumentException("No such balance"));
+        if (amount.compareTo(balance.getBalance()) > 0) throw new IllegalArgumentException("Not enough funds");
+        transactionRepository.save(new Transaction(balance.getId(),
                 LocalDateTime.now(),
                 TransactionType.WITHDRAW,
                 amount));
-        return BalanceToDtoMapper.balanceToDto(balanceRepository.save(new Balance(userBalance.getId(),
-                userBalance.getUserId(),
-                userBalance.getBalance().subtract(amount))));
+        return BalanceToDtoMapper.balanceToDto(balanceRepository.save(new Balance(balance.getId(),
+                balance.getUserId(),
+                balance.getBalance().subtract(amount))));
     }
 
     private Balance getBalanceByUserId(String userId) {
