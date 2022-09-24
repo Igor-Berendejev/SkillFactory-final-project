@@ -1,5 +1,6 @@
 package com.example.bank.entity;
 
+import com.example.bank.types.TransactionMethod;
 import com.example.bank.types.TransactionType;
 import com.example.bank.types.TransactionTypeConverter;
 import com.sun.istack.NotNull;
@@ -37,11 +38,17 @@ public class Transaction {
     @NotNull
     private BigDecimal amount;
 
-    public Transaction(Long balanceId, LocalDateTime date, TransactionType transactionType, BigDecimal amount) {
+    @Column(name = "T_METHOD")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TransactionMethod transactionMethod;
+
+    public Transaction(Long balanceId, LocalDateTime date, TransactionType transactionType, BigDecimal amount, TransactionMethod transactionMethod) {
         this.balanceId = balanceId;
         this.date = date;
         this.transactionType = transactionType;
         this.amount = amount;
+        this.transactionMethod = transactionMethod;
     }
 
     @Override

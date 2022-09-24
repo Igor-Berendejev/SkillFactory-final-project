@@ -3,6 +3,7 @@ package com.example.bank.service;
 import com.example.bank.entity.Balance;
 import com.example.bank.repository.BalanceRepository;
 import com.example.bank.repository.TransactionRepository;
+import com.example.bank.types.TransactionMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,7 +68,7 @@ public class BalanceServiceTest {
         when(balanceRepository.findById(anyLong())).thenReturn(Optional.of(oldBalance));
         when(balanceRepository.save(newBalance)).thenReturn(newBalance);
 
-        service.addBalance("1", new BigDecimal(100));
+        service.addBalance("1", new BigDecimal(100), TransactionMethod.ATM);
 
         verify(balanceRepository, Mockito.times(1)).findById(balanceIdCaptor.capture());
         verify(balanceRepository, Mockito.times(1)).save(balanceArgumentCaptor.capture());

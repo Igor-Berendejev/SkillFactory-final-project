@@ -2,6 +2,7 @@ package com.example.bank.controller;
 
 import com.example.bank.entity.BalanceDto;
 import com.example.bank.service.BalanceService;
+import com.example.bank.types.TransactionMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,12 @@ public class BalanceController {
     }
 
     @PostMapping("/put/{balanceId}")
-    public ResponseEntity<String> addBalance(@PathVariable String balanceId, @RequestBody BigDecimal amount) {
+    public ResponseEntity<String> addBalance(@PathVariable String balanceId,
+                                             @RequestBody BigDecimal amount,
+                                             @RequestHeader TransactionMethod transactionMethod) {
         BalanceDto balanceDto;
         try {
-            balanceDto = balanceService.addBalance(balanceId, amount);
+            balanceDto = balanceService.addBalance(balanceId, amount, transactionMethod);
             return new ResponseEntity<>(balanceDto.toString(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -33,10 +36,12 @@ public class BalanceController {
     }
 
     @PostMapping("/withdraw/{balanceId}")
-    public ResponseEntity<String> withdraw(@PathVariable String balanceId, @RequestBody BigDecimal amount) {
+    public ResponseEntity<String> withdraw(@PathVariable String balanceId,
+                                           @RequestBody BigDecimal amount,
+                                           @RequestHeader TransactionMethod transactionMethod) {
         BalanceDto balanceDto;
         try {
-            balanceDto = balanceService.withdraw(balanceId, amount);
+            balanceDto = balanceService.withdraw(balanceId, amount, transactionMethod);
             return new ResponseEntity<>(balanceDto.toString(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

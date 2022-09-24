@@ -2,6 +2,7 @@ package com.example.bank.service;
 
 import com.example.bank.entity.Transaction;
 import com.example.bank.repository.TransactionRepository;
+import com.example.bank.types.TransactionMethod;
 import com.example.bank.types.TransactionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,10 +39,10 @@ public class TransactionServiceTest {
     @BeforeEach
     void prepareTransactions() {
         transactions = new ArrayList<>();
-        Transaction transaction1 = new Transaction(1l, LocalDateTime.of(2022, 2, 1, 10, 0), TransactionType.PUT, new BigDecimal(50l));
-        Transaction transaction2 = new Transaction(2l, LocalDateTime.of(2022, 2, 5, 10, 0), TransactionType.WITHDRAW, new BigDecimal(50l));
-        Transaction transaction3 = new Transaction(3l, LocalDateTime.of(2022, 2, 10, 10, 0), TransactionType.PUT, new BigDecimal(50l));
-        Transaction transaction4 = new Transaction(4l, LocalDateTime.of(2022, 2, 15, 10, 0), TransactionType.WITHDRAW, new BigDecimal(50l));
+        Transaction transaction1 = new Transaction(1l, LocalDateTime.of(2022, 2, 1, 10, 0), TransactionType.PUT, new BigDecimal(50l), TransactionMethod.ATM);
+        Transaction transaction2 = new Transaction(2l, LocalDateTime.of(2022, 2, 5, 10, 0), TransactionType.WITHDRAW, new BigDecimal(50l), TransactionMethod.ATM);
+        Transaction transaction3 = new Transaction(3l, LocalDateTime.of(2022, 2, 10, 10, 0), TransactionType.PUT, new BigDecimal(50l), TransactionMethod.ATM);
+        Transaction transaction4 = new Transaction(4l, LocalDateTime.of(2022, 2, 15, 10, 0), TransactionType.WITHDRAW, new BigDecimal(50l), TransactionMethod.ATM);
 
         transactions.add(transaction1);
         transactions.add(transaction2);
